@@ -4,7 +4,7 @@
 
 ## ✨ 功能特性
 
-- 🤖 **AI 智能分析**: 集成 OpenAI GPT-4 和 Anthropic Claude，智能分析和整合信息
+- 🤖 **AI 智能分析**: 集成 DeepSeek、OpenAI GPT-4 和 Anthropic Claude，智能分析和整合信息
 - 🔎 **多轮深度搜索**: 自动生成后续查询，进行多轮深度信息检索
 - 🌐 **网页内容提取**: 自动提取和清洗网页正文内容
 - 📊 **实时进度展示**: 可视化展示研究进度和中间结果
@@ -36,11 +36,22 @@ cp .env.example .env
 
 编辑 `.env` 文件，填入至少一个 AI API 密钥:
 
+**推荐：使用 DeepSeek API（性价比高）**
 ```
+DEEPSEEK_API_KEY=sk-xxxxx
+DEEPSEEK_BASE_URL=https://api.deepseek.com  # 可选，默认值
+```
+
+**或使用其他 AI 服务**
+```
+# OpenAI
 OPENAI_API_KEY=sk-xxxxx
-# 或
+
+# Anthropic Claude
 ANTHROPIC_API_KEY=sk-ant-xxxxx
 ```
+
+> 💡 **提示**: DeepSeek 提供高性价比的 AI 服务，API 兼容 OpenAI 格式。获取密钥请访问 https://platform.deepseek.com/
 
 ### 4. 运行应用
 
@@ -53,7 +64,7 @@ streamlit run app.py
 ## 📖 使用方法
 
 1. **输入研究主题**: 在文本框中输入你想研究的主题
-2. **选择 AI 模型**: 选择使用 OpenAI 或 Claude 进行分析
+2. **选择 AI 模型**: 选择使用 DeepSeek、OpenAI 或 Claude 进行分析
 3. **配置参数**: 设置研究轮数和每轮搜索结果数量
 4. **开始研究**: 点击"开始研究"按钮，系统将自动执行多轮搜索和分析
 5. **查看结果**: 实时查看研究进度和分析结果
@@ -62,7 +73,7 @@ streamlit run app.py
 ## 🛠️ 技术栈
 
 - **前端界面**: Streamlit
-- **AI 模型**: OpenAI GPT-4 / Anthropic Claude
+- **AI 模型**: DeepSeek / OpenAI GPT-4 / Anthropic Claude
 - **搜索引擎**: DuckDuckGo Search API
 - **网页解析**: BeautifulSoup4 + Requests
 - **文档生成**: Python-Markdown + WeasyPrint
@@ -97,11 +108,19 @@ deep-research/
 
 在 `.env` 文件中可配置以下参数:
 
+**AI 服务配置**:
+- `DEEPSEEK_API_KEY`: DeepSeek API 密钥 (推荐，性价比高)
+- `DEEPSEEK_BASE_URL`: DeepSeek API 地址 (默认: https://api.deepseek.com)
 - `OPENAI_API_KEY`: OpenAI API 密钥
 - `ANTHROPIC_API_KEY`: Anthropic Claude API 密钥
+
+**研究参数**:
 - `MAX_RESEARCH_ROUNDS`: 最大研究轮数 (默认: 3)
 - `RESULTS_PER_SEARCH`: 每轮搜索结果数 (默认: 10)
 - `MAX_CONCURRENT_REQUESTS`: 最大并发请求数 (默认: 5)
+
+**模型配置**:
+- `DEEPSEEK_MODEL`: DeepSeek 模型名称 (默认: deepseek-chat，可选: deepseek-reasoner)
 
 ## 📝 示例
 
@@ -122,6 +141,7 @@ MIT License
 ## 🙏 致谢
 
 - [Streamlit](https://streamlit.io/) - 强大的 Python Web 应用框架
+- [DeepSeek](https://www.deepseek.com/) - 高性价比的 AI 服务
 - [OpenAI](https://openai.com/) - GPT 系列模型
 - [Anthropic](https://www.anthropic.com/) - Claude 模型
 - [DuckDuckGo](https://duckduckgo.com/) - 隐私友好的搜索引擎

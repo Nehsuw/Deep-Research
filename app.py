@@ -107,6 +107,8 @@ def main():
         
         # AI 提供商选择
         ai_options = []
+        if settings.DEEPSEEK_API_KEY:
+            ai_options.append("DeepSeek (推荐)")
         if settings.OPENAI_API_KEY:
             ai_options.append("OpenAI GPT-4")
         if settings.ANTHROPIC_API_KEY:
@@ -122,7 +124,13 @@ def main():
             help="选择用于分析的 AI 模型"
         )
         
-        ai_provider = AIProvider.OPENAI if "OpenAI" in ai_choice else AIProvider.ANTHROPIC
+        # 根据选择确定 AI 提供商
+        if "DeepSeek" in ai_choice:
+            ai_provider = AIProvider.DEEPSEEK
+        elif "OpenAI" in ai_choice:
+            ai_provider = AIProvider.OPENAI
+        else:
+            ai_provider = AIProvider.ANTHROPIC
         
         # 研究参数
         st.subheader("研究参数")

@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 class AIProvider(Enum):
     """AI 提供商枚举"""
+    DEEPSEEK = "deepseek"
     OPENAI = "openai"
     ANTHROPIC = "anthropic"
 
@@ -21,16 +22,26 @@ class AIProvider(Enum):
 class AIAnalyzer:
     """AI 分析类"""
     
-    def __init__(self, provider: AIProvider = AIProvider.OPENAI):
+    def __init__(self, provider: AIProvider = AIProvider.DEEPSEEK):
         """
         初始化 AI 分析器
         
         Args:
-            provider: AI 提供商 (OPENAI 或 ANTHROPIC)
+            provider: AI 提供商 (DEEPSEEK, OPENAI 或 ANTHROPIC)
         """
         self.provider = provider
         
-        if provider == AIProvider.OPENAI:
+        if provider == AIProvider.DEEPSEEK:
+            if not settings.DEEPSEEK_API_KEY:
+                raise ValueError("未配置 DEEPSEEK_API_KEY")
+            from openai import OpenAI
+            # DeepSeek 使用兼容 OpenAI 的 API
+            self.client = OpenAI(
+                api_key=settings.DEEPSEEK_API_KEY,
+                base_url=settings.DEEPSEEK_BASE_URL
+            )
+            self.model = settings.DEEPSEEK_MODEL
+        elif provider == AIProvider.OPENAI:
             if not settings.OPENAI_API_KEY:
                 raise ValueError("未配置 OPENAI_API_KEY")
             from openai import OpenAI
@@ -55,8 +66,8 @@ class AIAnalyzer:
             str: AI 响应内容
         """
         try:
-            if self.provider == AIProvider.OPENAI:
-                # OpenAI API 调用
+            if self.provider in [AIProvider.DEEPSEEK, AIProvider.OPENAI]:
+                # DeepSeek 和 OpenAI 使用相同的 API 格式
                 if system_prompt:
                     messages = [{"role": "system", "content": system_prompt}] + messages
                 
